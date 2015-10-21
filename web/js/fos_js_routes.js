@@ -1,0 +1,1 @@
+fos.Router.setData({"base_url":"","routes":{"id_demo_angular":{"tokens":[["text","\/demo"]],"defaults":[],"requirements":{"_method":"POST"},"hosttokens":[]}},"prefix":"","host":"localhost","scheme":"http"});

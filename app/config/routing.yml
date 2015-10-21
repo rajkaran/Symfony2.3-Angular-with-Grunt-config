@@ -1,0 +1,3 @@
+insighti_dart:
+    resource: "@InsightiDartBundle/Resources/config/routing.yml"
+    prefix:   /

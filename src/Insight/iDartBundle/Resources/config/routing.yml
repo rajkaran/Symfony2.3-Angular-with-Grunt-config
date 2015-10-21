@@ -1,0 +1,13 @@
+insighti_dart_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: InsightiDartBundle:Default:index }
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+id_demo_angular:
+    path:     /demo
+    defaults: { _controller: InsightiDartBundle:Default:demoAngular }
+    options: {expose:true}
+    requirements:
+        _method: POST
