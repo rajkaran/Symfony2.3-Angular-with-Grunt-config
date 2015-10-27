@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Basic Page Needs -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta charset="utf-8" />
+        <title></title>
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        
+        <!-- Mobile Specific Metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
+		
+		<!-- build:css(.) styles/index/vendor.css -->
+		<!-- bower:css -->
+			<link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css" />
+		<!-- endbower -->
+		<!-- endbuild -->
+		
+		<!-- build:css(.) styles/index/style.css -->
+			<link href="app/styles/base.css" rel="stylesheet" type="text/css" />
+		<!-- endbuild -->
+	
+	
+		<!-- minified -->
+		<!--<link href="dist/styles/index/vendor.71c590b0.css" rel="stylesheet" type="text/css" />
+		<link href="dist/styles/index/style.858fd6ad.css" rel="stylesheet" type="text/css" />-->
+
+        <!-- Favicons -->
+        <link rel="shortcut icon" href="images/favicon.ico">
+        <link rel="apple-touch-icon" href="images/portal-icon-32x32.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="images/portal-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="images/portal-icon-114x114.png">
+    </head>
+    
+	<body data-ng-app = "demoApp" data-ng-controller="MainCtrl">
+		<div>Click on the &quot click me &quot button to get server time in Ajax request. Time zone is America/Toronto.</div>
+		<div><button type="button" id="hit" data-ng-click="displayAjaxResponse()" >Click me</button></div>
+		<div>Server Time: <span data-ng-bind="serverResponse" ></span></div>
+	</body>
+	
+	
+	<!-- build:js(.) scripts/index/vendor.js -->
+    <!-- bower:js -->
+		<script src="app/scripts/thirdParty/router.js"></script>
+		<script src="app/scripts/thirdParty/fos_js_routes.js"></script>
+		<script src="bower_components/jquery/dist/jquery.min.js"></script>
+		<script src="bower_components/angular/angular.js"></script>
+		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	<!-- endbower -->
+    <!-- endbuild -->
+	
+	<!-- build:js(.) scripts/index/scripts.js -->
+		<script src="app/scripts/services/ServiceModule.js"></script>
+		<script src="app/scripts/services/demoAjaxCall.js"></script>		
+		<script src="app/scripts/app.js"></script>		
+		<script src="app/scripts/controllers/main.js"></script>			
+	<!-- endbuild -->
+	
+	<!-- concat -->
+	<!--<script src=".tmp/concat/scripts/index/vendor.js"></script>
+	<script src=".tmp/concat/scripts/index/scripts.js"></script>-->
+	
+	<!-- uglify --> 
+	<!--<script src="dist/scripts/index/vendor.d4265355.js"></script>
+	<script src="dist/scripts/index/scripts.b8b2d869.js"></script>-->
+</html>
+
+

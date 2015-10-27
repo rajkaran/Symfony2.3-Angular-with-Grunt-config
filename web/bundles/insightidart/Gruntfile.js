@@ -1,4 +1,4 @@
-// Generated on 2015-09-08 using generator-angular 0.9.2
+// Generated on 2015-03-16 using generator-angular 0.9.2
 'use strict';
 
 // # Globbing
@@ -29,15 +29,11 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
-      bower: {
-        files: ['bower.json'],
-        tasks: ['wiredep']
-      },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
         tasks: ['newer:jshint:all'],
         options: {
-          livereload: '<%= connect.options.livereload %>'
+          livereload: true
         }
       },
       jsTest: {
@@ -50,16 +46,6 @@ module.exports = function (grunt) {
       },
       gruntfile: {
         files: ['Gruntfile.js']
-      },
-      livereload: {
-        options: {
-          livereload: '<%= connect.options.livereload %>'
-        },
-        files: [
-          '<%= yeoman.app %>/{,*/}*.html',
-          '.tmp/styles/{,*/}*.css',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
-        ]
       }
     },
 
@@ -114,7 +100,7 @@ module.exports = function (grunt) {
     jshint: {
       options: {
         jshintrc: '.jshintrc',
-        reporter: require('jshint-stylish')
+        reporter: require('jshint-stylish'),
       },
       all: {
         src: [
@@ -160,17 +146,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // Automatically inject Bower components into the app
-    wiredep: {
-      options: {
-        cwd: '<%= yeoman.app %>'
-      },
-      app: {
-        src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
-      }
-    },
-
     // Renames files for browser caching purposes
     filerev: {
       dist: {
@@ -187,7 +162,7 @@ module.exports = function (grunt) {
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
-      html: '<%= yeoman.app %>/index.html',
+      html: '<%= yeoman.app %>/html/{,*/}*.html',
       options: {
         dest: '<%= yeoman.dist %>',
         flow: {
@@ -237,27 +212,6 @@ module.exports = function (grunt) {
     //   dist: {}
     // },
 
-    imagemin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.{png,jpg,jpeg,gif}',
-          dest: '<%= yeoman.dist %>/images'
-        }]
-      }
-    },
-
-    svgmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.app %>/images',
-          src: '{,*/}*.svg',
-          dest: '<%= yeoman.dist %>/images'
-        }]
-      }
-    },
 
     htmlmin: {
       dist: {
@@ -271,7 +225,7 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.dist %>',
-          src: ['*.html', 'views/{,*/}*.html'],
+          src: ['views/{,*/}*.html'],
           dest: '<%= yeoman.dist %>'
         }]
       }
@@ -294,7 +248,7 @@ module.exports = function (grunt) {
     // Replace Google CDN references
     cdnify: {
       dist: {
-        html: ['<%= yeoman.dist %>/*.html']
+        html: ['<%= yeoman.dist %>/html/*.html']
       }
     },
 
@@ -331,8 +285,106 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
+      },
+	  images: {
+        expand: true,
+        cwd: '<%= yeoman.app %>/images',
+		src: '{,*/}*.{png,jpg,jpeg,gif,svg}',
+		dest: '<%= yeoman.dist %>/images'
       }
     },
+	
+	'string-replace': {
+		dist: {
+			files: [{
+				expand: true,
+				cwd: './../../../src/Insight/iDartBundle/Resources/views',
+				src: ['**/*.html.twig', '!base.html.twig'],
+				dest: '<%= yeoman.app %>/templates/'
+			}],
+			options: {
+				replacements: [{
+					pattern: '{% extends "InsightiDartBundle::base.html.twig" %}',
+					replacement: ''
+				}]
+			}
+		}
+	},
+	
+	twigRender: {
+		eclipse: {
+			files : [
+				{
+					data: { 
+						greeting: 'Hello',
+						target: 'world'
+					}, 
+					expand: true,
+					cwd: '<%= yeoman.app %>/templates',
+					src: ['**/*.twig', '!**/_*.twig'], // Match twig templates but not partials
+					dest: '<%= yeoman.app %>/html',
+					ext: '.html' 
+				}
+			],
+			options:{
+				extensions:[
+					function(Twig){
+						Twig.exports.extendFunction( 'asset', function( source ){
+							return source.split('insightidart/')[1];
+						});
+					},
+					
+					function(Twig){
+						Twig.exports.extendFunction( 'path', function( source ){
+							return source;
+						});
+					},
+					
+					function(Twig)
+					{
+					  Twig.exports.extendTag(
+					  {
+						type: 'verbatim',
+						regex: /^verbatim$/,
+						next: [
+						  'endverbatim'
+						],
+						open: true,
+
+						// Parse the html and return it without any spaces between tags
+						parse: function (token, context, chain)
+						{
+						  // Parse the output without any filter
+						  var unfiltered = Twig.parse.apply(this, [token.output, context]),
+
+						  // A regular expression to find closing and opening tags with spaces between them
+						  rBetweenTagSpaces = />\s+</g,
+
+						  // Replace all space between closing and opening html tags
+						  output = unfiltered.replace(rBetweenTagSpaces,'><').trim();
+
+						  return {
+							chain: chain,
+							output: output
+						  };
+						}
+					  });
+					},
+					function(Twig)
+					{
+					  Twig.exports.extendTag(
+					  {
+						type: 'endverbatim',
+						regex: /^endverbatim$/,
+						next: [ ],
+						open: false
+					  });
+					}
+					
+				]
+			}
+		},
+	},
 
     // Run some tasks in parallel to speed up the build process
     concurrent: {
@@ -344,8 +396,7 @@ module.exports = function (grunt) {
       ],
       dist: [
         'copy:styles',
-        'imagemin',
-        'svgmin'
+		'copy:images',
       ]
     },
 
@@ -389,7 +440,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'wiredep',
+	'string-replace',
+	'twigRender',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',

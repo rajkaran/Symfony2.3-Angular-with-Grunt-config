@@ -7,14 +7,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DefaultController extends Controller
 {
-    public function indexAction($name)
+    public function indexAction()
     {
-        return $this->render('InsightiDartBundle:Default:index.html.twig', array('name' => $name));
+        return $this->render('InsightiDartBundle:Default:index.html.twig');
     }
 	
+	// Handle Ajax request 
 	public function demoAngularAction()
     {
-        $message = array("date"=>"2015-09-08", "time"=>"12:22:34");
+        date_default_timezone_set ( "America/Toronto" );		
+		
+		$message = array("requestTimeStamp"=>new \DateTime(date('Y-m-d H:i:s')));
 		
 		$msgCode = 200;
 		

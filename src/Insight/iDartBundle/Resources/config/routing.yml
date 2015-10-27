@@ -1,5 +1,5 @@
 insighti_dart_homepage:
-    path:     /hello/{name}
+    path:     /
     defaults: { _controller: InsightiDartBundle:Default:index }
 
 fos_js_routing:
